@@ -1,0 +1,130 @@
+diff between mongod and mongo 
+mongod is the "Mongo Daemon" it's basically the host process for the database.
+ When you start. mongod you're basically saying "start the MongoDB process and run it 
+ in the background". ...
+ mongo is the command-line shell that connects to a specific instance of mongod.
+
+show all databse : show dbs;
+
+***for create a databas : use databaseName;
+         example use Ecommarce;
+
+***know in which database you are : db;
+
+***switch into anotherdatabase : use databaseName;
+                            example use Ecommarce;
+
+***for create a collection : db.createCollections('collectionName');
+                            db.createCollections('products');
+
+***show all collections : show collections;
+
+
+****delete a collection : db.collectionName.drop(); 
+          example   db.product.drop();
+
+***insert a document in databse's collection : db.collectionName.insertOne({name:"Laptop",prize :50000})
+                 example : db.product.insertOne({name:"Laptop",prize :50000});
+
+***insert multiple document in databse's collection : db.collectionName.insertMany([{name:"Hp",prize :60000},{name:"Mac",prize :90000}])
+        example : db.product.insertMany([{name:"Hp",prize :60000},{name:"Intel",prize :50000},{name:"Mouse",prize :500},{name:"Keyboard",prize :1000},{name:"Mac",prize :90000}]);
+
+**************to find single document in a collection : db.collectionName.find();
+                       example : db.product.find();
+                       **************to find a document in a collection : db.collectionName.findOne();
+                       example : db.product.findOne();
+
+
+*******************Update a document : db.collectionName.update({"_id ": "id},{$set{updateFileld : value}})
+             example : db.product.update({"_id": ObjectId("6121e297fe6a189a3af6fdb6")},{$set :{"name":"Fan"}})
+
+
+
+******************delete a document : db.collectionName.deleteOne({"_id ": "id});
+
+           example :db.product.deleteOne({"_id": ObjectId("6121e297fe6a189a3af6fdb6")});
+
+********************delete many document in a collection 
+             db.collectionName.deleteMany({_id : {$in : [{id1,id2,idn}]})
+
+             example : db.product.deleteMany({"_id" : {$in : [  ObjectId("6121e2f1fe6a189a3af6fdb7"),ObjectId("6121e3dbfe6a189a3af6fdb9")]}})
+
+
+             db.product.update({"_id":ObjectId("6121e4b4fe6a189a3af6fdba")}, {$set : {reviews : {[{text:"Good",rating :3.5},{text:"Excillent",rating :4.5}]}} )
+
+
+              ***********************************************************************************************
+
+            $eq = Matches values that are equal to a specified value.
+            $gt = Matches values that are greater than a specified value.
+            $get = Matches values that are greater than or equal to a specified value.
+            $in =Matches any of the values specified in an array.
+            $lt = Matches values that are less than a specified value.
+
+
+            *****************explain a query 
+            db.product.find({name:"Product5000"}).explain('executionStats');
+
+            *********************for loop 
+            for ( let i=1 ; i<=5000;i++){ db.product.insert({name:"Product"+ i, prize : i}) }
+
+            ***********create a index 
+            db.collectionName.createIndex({name : 1})
+
+            find indexse ********************db.product.getIndexes()
+
+
+            searchby id 
+            db.product.find( {"_id" : ObjectId("61222a68dc3bcb3c186677c2")}).explain('executionStats');
+
+            *****************how to create a user with password 
+1st*************
+            use admin
+db.createUser(
+  {
+    user: "myUserAdmin",
+    pwd: passwordPrompt(), // or cleartext password
+    roles: [ { role: "userAdminAnyDatabase", db: "admin" }, "readWriteAnyDatabase" ]
+  }
+)
+
+2nd****************
+db.adminCommand( { shutdown: 1 } )
+
+
+
+
+3rd**************  mongod --auth --port 27017 --dbpath /var/lib/mongodb
+
+4th **********************************************
+save it to 
+security:
+    authorization: enabled
+
+5th ********************   mongosh --port 27017  --authenticationDatabase "admin" -u "myUserAdmin" -p 
+
+
+6th run it mongosh --port 27017 -u "myTester" --authenticationDatabase "test" -p
+
+
+
+
+*************check user 
+db.runCommand({connectionStatus : 1});
+
+
+mongoose ************************
+
+Mongoose is an Object Data Modeling (ODM)
+ library for MongoDB and Node. js. It manages relationships
+  between data, provides schema validation, and is used to
+ translate between objects in code and the representation of those objects in MongoDB.
+
+
+ ***************************************
+ MongoD 
+ 
+mongod is a background process used by MongoDB. The main purpose of mongod is
+ to manage all the MongoDB server tasks. For instance, accepting requests,
+  responding to client, and memory management. mongo is a command line shell that
+ can interact with the client (for example, system administrators and developers).
